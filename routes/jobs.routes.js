@@ -1,20 +1,31 @@
 const express = require("express");
 const Job = require('../models/Job');
-const jobsRouter = express.Router();
+const router = express.Router();
 
-jobsRouter.post('/add', (req, res) => {
+// router.get('/', (req, res) => {
+//   res.send(`
+//     <h1>Rota Jobs</h1>
+//   `)
+// });
+
+router.post('/add', async (req, res) => {
   let { title, salary, company, description, email, new_job } = req.body;
 
-  Job.create({
-    title,
-    description,
-    salary,
-    company,
-    email,
-    new_job
-  })
-  .then(() => res.redirect('/'))
-  .catch((err) => console.warn(err));
+  try {
+    const job = Job.create({
+      title,
+      description,
+      salary,
+      company,
+      email,
+      new_job
+    });
+
+    res.status(201).json({ message: "Job incluído com sucesso!"});  //res.redirect('/'))
+  }
+  catch(err) {
+    console.warn(err);
+  }
 });
 
-module.exports = jobsRouter;
+module.exports.jobsRoutes = router
