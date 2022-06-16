@@ -1,6 +1,8 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 const db = require('./db/connection')
 const routes = require('./routes')
@@ -30,7 +32,7 @@ db.authenticate()
 
 // routes
 app.get('/', (req, res) => {
-  let busca = req.body.job
+  const busca = req.query.job
 
   if (!busca) {
     Job.findAll({
@@ -41,17 +43,19 @@ app.get('/', (req, res) => {
     .then(jobs => {
       res.render('index', { jobs })
     })
+    .catch(err => console.warn(err))
 
   } else {
     Job.findAll({
-      where: { title: busca },
+      where: {title: {[Op.like]: "%" + busca + "%"}},
       order: [
         ['createdAt', 'DESC']
       ]
     })
     .then(jobs => {
-      res.render('index', { jobs })
+      res.render('index', { jobs, busca })
     })
+    .catch(err => console.warn(err))
   }
 })
 

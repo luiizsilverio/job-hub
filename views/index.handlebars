@@ -23,7 +23,13 @@
     <div id="jobs-container" class="container">
       <div class="row">
         <div class="col-md-12">
-          <h2 id="job-list-title">Veja as novas vagas em destaque</h2>
+
+          {{#if busca}}
+            <h2 id="job-list-title">Buscando vagas que contêm: {{busca}} </h2>
+          {{else}}
+            <h2 id="job-list-title">Veja as novas vagas em destaque</h2>
+          {{/if}}
+
           <ul id="job-list" class="list-group">
             {{#each jobs}}
               <li class="list-group-item {{#if this.dataValues.new_job}}new-job{{/if}}">
@@ -32,7 +38,7 @@
                 <h2>{{ this.dataValues.title }}</h2>
                 <p>R$ {{ thisdataValues.salary }}</p>
                 <span class="new-job-label">Nova</span>
-                <a href="#" class="btn btn-primary">Ver vaga</a>
+                <a href="/jobs/details/{{ dataValues.id }}" class="btn btn-primary">Ver vaga</a>
               </li>
             {{/each}}
           </ul>
