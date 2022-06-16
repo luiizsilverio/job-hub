@@ -4,6 +4,7 @@ const path = require('path')
 
 const db = require('./db/connection')
 const routes = require('./routes')
+const Job = require('./models/Job')
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // handlebars
-app.set('views', path.join(__dirname, 'views'))
+// app.set('views', path.join(__dirname, 'views')) // não precisa, o padrão já é buscar na pasta views
 app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
@@ -27,8 +28,31 @@ db.authenticate()
     console.warn("Ocorreu um erro ao conectar", err)
   });
 
+// routes
 app.get('/', (req, res) => {
-  res.render('index')
+  let busca = req.body.job
+
+  if (!busca) {
+    Job.findAll({
+      order: [
+        ['createdAt', 'DESC']
+      ]
+    })
+    .then(jobs => {
+      res.render('index', { jobs })
+    })
+
+  } else {
+    Job.findAll({
+      where: { title: busca },
+      order: [
+        ['createdAt', 'DESC']
+      ]
+    })
+    .then(jobs => {
+      res.render('index', { jobs })
+    })
+  }
 })
 
 app.use(routes);
