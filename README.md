@@ -36,7 +36,7 @@ Projeto desenvolvido em __Node.js__ durante o curso [Javascript do Básico ao Av
 * Banco __SQLite__
 
 ## :camera_flash: Screenshots
-![](https://github.com/luiizsilverio/happy/blob/main/public/images/screenshots/happy.gif)
+![](https://github.com/luiizsilverio/job-hub/blob/main/assets/job-hub.gif)
 
 
 ## :car: Iniciando o projeto
